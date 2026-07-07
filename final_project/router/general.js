@@ -1,6 +1,5 @@
 const express = require('express');
 let books = require("./booksdb.js");
-const axios = require('axios');
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
@@ -22,8 +21,12 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  //Write your code here
-  return res.status(200).json(books);
+  const getBooks = new Promise((resolve, reject) => {
+    resolve(books);
+  });
+
+  const booksList = await getBooks;
+  return res.status(200).json(booksList);
 });
 
 // Get book details based on ISBN
